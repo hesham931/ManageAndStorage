@@ -1,0 +1,64 @@
+@model IEnumerable<ManageAndStorage.Models.Product>
+@{
+    ViewData["Title"] = "Search List";
+}
+<a asp-controller = "Item" asp-action="Custom" class = "btn btn-success ml-2">Custom</a>
+
+<table class="table table-success table-striped mt-4 w-100">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" colspan="3">Name</th>
+            <th scope="col">Sale Price</th>
+            <th scope="col">Buying Price</th>
+            <th scope="col">Available Items</th>
+            <th scope="col">Item Location</th>
+            <th scope="col">Options</th>
+            <th scope="col">Buying List</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Count() == 0){
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+        else{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.DisplayId</th>
+                    <td colspan="3">@item.Name</td>
+                    <td>@item.SalePrice</td>
+                    <td>@item.BuyingPrice</td>
+                    <td class = "AvilableItems">@item.AvilableItems</td>
+                    <td>@item.ItemLocation</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-ID = "@item.id" class = "btn btn-info">Edit</a>
+                    </td>
+                    <td>
+                        <form method="POST" asp-controller="Item" asp-action = "SaleListWithId" asp-route-ItemId = "@item.id" asp-route-ProductId="@item.ProductId">
+                            <input title="Click enter to send the item to the Sales List" type="number" min="1" max="@item.AvilableItems" style="width:60px" value="1" name="sales" class = "confirm">
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    window.addEventListener("load", ()=>{
+        for(let i = 0 ; i < @Model.Count()-0 ; i++){
+            document.getElementsByClassName("confirm")[i].addEventListener("click", ()=>{
+                if(document.getElementsByClassName("AvilableItems")[i].innerHTML > 0)document.getElementsByClassName("confirm")[i].style = "background-color:green; color:white;";
+            }, false);
+            document.getElementsByClassName("confirm")[i].addEventListener("keydown", ()=>{
+                    if(document.getElementsByClassName("AvilableItems")[i].innerHTML <= 0) alert("no enough items for sale!");
+            }, false);
+            if(document.getElementsByClassName("AvilableItems")[i].innerHTML <= 0) document.getElementsByClassName("AvilableItems")[i].style="background-color:red;color:white;font-wieght:bolder;text-align:center";
+        }
+    }, false);
+</script>

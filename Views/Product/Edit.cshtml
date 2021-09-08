@@ -1,0 +1,29 @@
+@model ManageAndStorage.Models.Product
+@{
+    ViewData["Title"] = "Edit Page";
+}
+<div class="text-center">
+    <p>Edit products</p>
+    <form method="POST" asp-action="Edit" asp-route-ID = "@Model.id" class = "border border-info border-2 p-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" type="text" placeholder="Name" aria-label="default input example">
+
+        <label asp-for="SalePrice"></label>
+        <input asp-for="SalePrice" class="form-control" type="text" placeholder="Sale Price" aria-label="default input example">
+
+        <label asp-for="BuyingPrice"></label>
+        <input asp-for="BuyingPrice" class="form-control" type="text" placeholder="Buying Price" aria-label="default input example">
+
+        <label asp-for="AvilableItems"></label>
+        <input asp-for="AvilableItems" class="form-control" type="text" placeholder="Avilable Items for sale" aria-label="default input example">
+
+        <label asp-for="ItemLocation"></label>
+        <input asp-for="ItemLocation" class="form-control" type="text" placeholder="Item Location" aria-label="default input example">
+
+        <input asp-for="ProductId" hidden>
+        <input asp-for="DisplayId" hidden>
+        <input type="submit" class = "btn btn-success mt-4" value = "Edit Products">
+        <a asp-action = "DisplayInforamtion" asp-route-ID="@Model.ProductId" class = "btn btn-danger mt-4">Back</a>
+    </form>
+</div>
+<script src = "..\..\js\ProductValidation.js"></script>

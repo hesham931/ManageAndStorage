@@ -1,0 +1,16 @@
+@model ManageAndStorage.Models.BussinessType
+@{
+    ViewData["Title"] = "Create page";
+}
+<div class="text-center">
+    <p>Create new Window</p>
+    <form method="POST" asp-action="Create" class = "border border-info border-2 p-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" type="text" placeholder="Name" aria-label="default input example">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" type="text" placeholder="Description (Optional)" aria-label="default input example">
+        <input type="submit" class = "btn btn-success mt-4" value="Create Window">
+        <a asp-action = "index" class = "btn btn-danger mt-4">Back</a>
+    </form>
+</div>
+<script src = "..\..\js\HomeValidation.js"></script>

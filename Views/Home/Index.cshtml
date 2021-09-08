@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ManageAndStorage.Models.BussinessType>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    a:hover{
+        text-decoration: none;
+    }
+</style>
+<a class = "text-end btn btn-info" asp-action="Create">Create New</a>
+<div class = "text-center border border-dark border-3 mt-5 p-3 w-70">
+    @if(Model.Count() == 0){
+        <p>No data found!</p>
+    }
+    else{
+        foreach(var obj in Model){
+            <a href="Product\index\@obj.id" class = "text-white">
+                <div class="card bg-info w-50" style="display: inline-grid;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3" style="border:solid white 3px;border-radius:10px;padding:10px;width:100px;margin:auto">@obj.Name</h5>
+                    <p class="card-text">@obj.Description</p>
+                    <div class = "mt-4">
+                        <a asp-action="Edit" asp-route-ID = "@obj.id"  class = "btn btn-warning m-3">Edit</a>
+                        <a asp-action="Delete" asp-route-ID = "@obj.id" class = "btn btn-danger m-3">Delete</a>
+                    </div>
+                </div>
+                </div>
+            </a>
+        }
+    }
+</div>
