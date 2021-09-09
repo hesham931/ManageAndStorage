@@ -42,33 +42,55 @@ namespace ManageAndStorage.Data
 
             return test;
         }
-        public IEnumerable<Item> Filtring(ApplicationDbContext Db, string Pattren){
-            //this function not completed logically
+        public IEnumerable<Item> Filtring(ApplicationDbContext Db, string Pattren, string LastDate){
             IQueryable<Item> result = null;
-
 
             if(Pattren != ""){
                 DateTime CurrentDate = DateTime.Now;
+                string year = LastDate[4].ToString() + LastDate[5].ToString() + LastDate[6].ToString() + LastDate[7].ToString();
+                DateTime PreviousDate = new DateTime(Int16.Parse(year), Int16.Parse(LastDate[0].ToString()), Int16.Parse(LastDate[2].ToString()));
 
                 if(Pattren == "Last Day"){
-                    int ResultDay = (int)CurrentDate.Day - 1;
-
-
-                    if(ResultDay == 0){
-                        int LastMonth = (int)CurrentDate.Month - 1;
-                        if(LastMonth == 0) LastMonth = 12;
-                        foreach(var item in Db.Items){
-                            if(item.SaleDate.Month == LastMonth) ResultDay = item.SaleDate.Day;
-                        }
-                    }
-
-
-                    result = from data in Db.Items where data.SaleDate.Day == ResultDay select data;
+                    result = from data in Db.Items where data.SaleDate.Day == PreviousDate.Day select data;
                 }
-
-
                 else if(Pattren == "Last Week"){
-                    int CurrentDay = CurrentDate.Day;
+                    int DayOfTheLastWeek = (int)PreviousDate.DayOfWeek;
+                    int StartOfTheWeek = 0;
+                    int EndOfTheWeek = 0;
+
+                   IQueryable<int> Days = (from data in Db.Items where data.SaleDate.Month == PreviousDate.Month || data.SaleDate.Month == PreviousDate.Month-1 select data.SaleDate.Day).Distinct();
+                    IList<int> ListOfDays = new List<int>();
+                    foreach(var item in Days){
+                        ListOfDays.Add(item);
+                    }
+                    for(int i=ListOfDays.IndexOf(PreviousDate.Day); DayOfTheLastWeek > 0; i--){
+                        StartOfTheWeek = ListOfDays[i];
+                        DayOfTheLastWeek--;
+                        if(i == 0) i = ListOfDays.Count() - 1;
+                    }
+                    for(int i = ListOfDays.IndexOf(StartOfTheWeek),j=0; j<5; j++,i++){
+                        EndOfTheWeek = ListOfDays[i];
+                        if(i == ListOfDays.Count()-1) i = -1;
+                    }
+                    IQueryable<Item> Result = from data in Db.Items where data.SaleDate.Day >= StartOfTheWeek || data.SaleDate.Day >= 1 && data.SaleDate.Day <= EndOfTheWeek select data;
+
+                    result = from data in Db.Items select data;
+                    return Result;
+                }
+            }
+            return result;
+        }
+    }
+}
+/*0 Sunday -7
+1 Monday -6
+2 Tuesday -5
+3 wensday -4
+4 Thursday -3
+5 Friday -2
+6 Saturday -1 */
+/*old code for Last Week
+int CurrentDay = CurrentDate.Day;
                     //int CurrentDay = 10;
                     int LastWeekDay = CurrentDay - 7;
                     
@@ -136,22 +158,4 @@ namespace ManageAndStorage.Data
                         
                     //}
                     result = from data in Db.Items where data.SaleDate.Day >= LastWeekDay where LastWeekDay != 0 select data;
-                    
-                }
-                /* else if(Pattren == "Last Month"){}
-                else if(Pattren == "Daily"){}
-                else if(Pattren == "Weekly"){}
-                else if(Pattren == "Monthly"){} */
-            }
-            
-            return result;
-        }
-    }
-}
-/*0 Sunday -7
-1 Monday -6
-2 Tuesday -5
-3 wensday -4
-4 Thursday -3
-5 Friday -2
-6 Saturday -1 */
+*/

@@ -116,8 +116,8 @@ namespace ManageAndStorage.Controllers
         }
         [Route("Item/filter_option/Apply_filtring")]
         [HttpPost]
-        public IActionResult Fitering(string FilterOption){
-            IEnumerable<Item> obj = _search.Filtring(_Db, FilterOption);
+        public IActionResult Fitering(string FilterOption, string LastWeek){
+            IEnumerable<Item> obj = _search.Filtring(_Db, FilterOption, LastWeek);
 
             return View("Fitering", obj);
         }

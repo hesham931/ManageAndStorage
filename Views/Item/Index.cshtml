@@ -16,16 +16,13 @@
     <form method="POST" asp-action = "SearchId">
         <input class="form-control form-control-lg mt-3 mr-3" type="search" placeholder="Item Id" aria-label=".form-control-lg example" style="text-indent: 5px; display:inline;width:98%;font-size:18px" name="Pattren">
     </form>
-    <form method="POST" asp-action="Fitering">
+    <form method="POST" asp-action="Fitering" id="filterForm">
         <select id="filter" class="form-control form-control-lg mt-3 mr-3" style="text-indent: 5px; display:inline;width:98%;font-size:18px" name = "FilterOption">
             <option disabled>Filter</option>
             <option>Last Day</option>
             <option>Last Week</option>
-            <option>Last Month</option>
-            <option>Daily</option>
-            <option>Weekly</option>
-            <option>Monthly</option>
         </select>
+        <input type="text" hidden name = "LastWeek" id = "LastWeek">
         <input type="submit" value="Apply the Filtring?" class="form-control form-control-lg mt-3 mr-3 btn btn-success" style="text-indent: 5px; display:inline;width:98%;font-size:18px">
     </form>
 </div>
@@ -68,9 +65,25 @@
 <script>
     let test = document.getElementsByClassName("price"),
         num;
+    const filterForm = document.getElementById("filterForm");
 
     for(i = 0 ; i < @Model.Count()-0 ; i++){
         num = test[i].innerHTML;
         test[i].innerHTML = parseFloat(num).toPrecision(4);
     }
+    filterForm.addEventListener("submit", (el)=>{
+        el.preventDefault();
+        const currentDate = new Date(),
+              LastWeek = document.getElementById("LastWeek");
+
+        if(document.getElementById("filter").value == "Last Day"){
+            const previous= new Date(currentDate.getTime() - 1 * 24 * 60 * 60 * 1000);
+            LastWeek.value = previous.toLocaleString();
+        }
+        else{
+            const previous= new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+            LastWeek.value = previous.toLocaleString();
+        }
+        filterForm.submit();
+    }, false);
 </script>
