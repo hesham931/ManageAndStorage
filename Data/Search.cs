@@ -47,8 +47,8 @@ namespace ManageAndStorage.Data
 
             if(Pattren != ""){
                 DateTime CurrentDate = DateTime.Now;
-                string year = LastDate[4].ToString() + LastDate[5].ToString() + LastDate[6].ToString() + LastDate[7].ToString();
-                DateTime PreviousDate = new DateTime(Int16.Parse(year), Int16.Parse(LastDate[0].ToString()), Int16.Parse(LastDate[2].ToString()));
+                string year = LastDate[0].ToString() + LastDate[1].ToString() + LastDate[2].ToString() + LastDate[3].ToString();
+                DateTime PreviousDate = new DateTime(Int16.Parse(year), Int16.Parse(LastDate[5].ToString()+LastDate[6].ToString()), Int16.Parse(LastDate[8].ToString()+LastDate[9].ToString()));
 
                 if(Pattren == "Last Day"){
                     result = from data in Db.Items where data.SaleDate.Day == PreviousDate.Day select data;
@@ -76,6 +76,9 @@ namespace ManageAndStorage.Data
 
                     result = from data in Db.Items select data;
                     return Result;
+                }
+                else{
+                    result = from data in Db.Items where data.SaleDate.Month == PreviousDate.Month && data.SaleDate.Day >= 1 select data;
                 }
             }
             return result;

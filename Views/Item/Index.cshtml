@@ -21,6 +21,7 @@
             <option disabled>Filter</option>
             <option>Last Day</option>
             <option>Last Week</option>
+            <option>Last Month</option>
         </select>
         <input type="text" hidden name = "LastWeek" id = "LastWeek">
         <input type="submit" value="Apply the Filtring?" class="form-control form-control-lg mt-3 mr-3 btn btn-success" style="text-indent: 5px; display:inline;width:98%;font-size:18px">
@@ -78,11 +79,16 @@
 
         if(document.getElementById("filter").value == "Last Day"){
             const previous= new Date(currentDate.getTime() - 1 * 24 * 60 * 60 * 1000);
-            LastWeek.value = previous.toLocaleString();
+            LastWeek.value = previous.toISOString();
+        }
+        else if(document.getElementById("filter").value == "Last Week"){
+            const previous= new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+            LastWeek.value = previous.toISOString();
         }
         else{
-            const previous= new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-            LastWeek.value = previous.toLocaleString();
+            console.log("last month");
+            const previous= new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+            LastWeek.value = previous.toISOString();
         }
         filterForm.submit();
     }, false);
