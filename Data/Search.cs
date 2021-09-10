@@ -62,8 +62,11 @@ namespace ManageAndStorage.Data
                     IList<int> ListOfDays = new List<int>();
                     foreach(var item in Days){
                         ListOfDays.Add(item);
+                        Console.WriteLine(ListOfDays[ListOfDays.Count()-1]);
                     }
-                    for(int i=ListOfDays.IndexOf(PreviousDate.Day); DayOfTheLastWeek > 0; i--){
+                    int test = PreviousDate.Day;
+                    while(ListOfDays.IndexOf(test) == -1){test--;DayOfTheLastWeek--;}
+                    for(int i=ListOfDays.IndexOf(test); DayOfTheLastWeek > 0; i--){
                         StartOfTheWeek = ListOfDays[i];
                         DayOfTheLastWeek--;
                         if(i == 0) i = ListOfDays.Count() - 1;
